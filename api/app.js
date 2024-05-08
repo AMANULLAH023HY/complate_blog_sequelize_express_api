@@ -1,7 +1,7 @@
 const express =require(  "express");
 const dotenv =require ("dotenv");
 const bodyParser =require("body-parser");
-const db = require('./models')
+const postsRoute = require('./routes/postsRoute')
 
 
 // const cors = require('cors')
@@ -13,6 +13,8 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 // ROUTES
+
+app.use('/api/posts', postsRoute);
 
 
 

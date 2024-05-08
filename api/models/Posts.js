@@ -1,22 +1,21 @@
-module.exports = (sequelize, DataTypes)=>{
-
-    const Posts = sequelize.define('post',{
+module.exports =(sequelize,DataTypes) =>{
+    const Posts = sequelize.define("Posts",{
 
         title:{
             type:DataTypes.STRING,
             allowNull:false
         },
-        posteText:{
+        postText:{
             type:DataTypes.STRING,
             allowNull:false
         },
-        userName:{
+        username:{
             type:DataTypes.STRING,
             allowNull:false
         },
-        
 
-    })
+    }); 
 
     return Posts;
-}
+
+};
