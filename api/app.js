@@ -1,9 +1,10 @@
 const express =require(  "express");
 const dotenv =require ("dotenv");
 const bodyParser =require("body-parser");
-const usersRoute = require('./routes/userRoute')
-const postsRoute = require('./routes/postsRoute')
-const commentsRoute = require('./routes/commentRoute')
+const usersRoute = require('./routes/userRoute');
+const postsRoute = require('./routes/postsRoute');
+const commentsRoute = require('./routes/commentRoute');
+const likesRoute = require('./routes/likeRoute');
 
 
 // const cors = require('cors')
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use('/api/users', usersRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/comments', commentsRoute);
+app.use('/api/likes', likesRoute);
 
 
 
