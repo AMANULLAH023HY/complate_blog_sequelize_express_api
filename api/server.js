@@ -2,7 +2,7 @@ const app =require("./app.js");
 const db = require('./models')
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 
 db.sequelize.sync().then(()=>{

@@ -1,6 +1,7 @@
 const express =require(  "express");
 const dotenv =require ("dotenv");
 const bodyParser =require("body-parser");
+const usersRoute = require('./routes/userRoute')
 const postsRoute = require('./routes/postsRoute')
 const commentsRoute = require('./routes/commentRoute')
 
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 
 // ROUTES
 
+app.use('/api/users', usersRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/comments', commentsRoute);
 
