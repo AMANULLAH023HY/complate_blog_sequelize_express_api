@@ -1,7 +1,6 @@
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
-
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 // User Registration
 const signupController = async (req, res) => {
@@ -42,10 +41,15 @@ const loginController = async (req, res) => {
     if (user) {
       bcrypt.compare(password, user.password).then((match) => {
         if (match) {
-            const accessToken = jwt.sign({username: user.username, id: user.id}, process.env.JWT_SECRET)
+          const accessToken = jwt.sign(
+            { username: user.username, id: user.id },
+            process.env.JWT_SECRET
+          );
           res.status(200).json({
             message: "user Login successfully!",
-            token:accessToken
+            id:user.id,
+            username:username,
+            token: accessToken,
           });
         } else {
           res.status(401).json({
@@ -53,10 +57,10 @@ const loginController = async (req, res) => {
           });
         }
       });
-    }else{
-        res.status(401).json({
-            message:"User doesn't Exist",
-          });
+    } else {
+      res.status(401).json({
+        message: "User doesn't Exist",
+      });
     }
   } catch (error) {
     res.status(500).json({
@@ -66,4 +70,32 @@ const loginController = async (req, res) => {
   }
 };
 
-module.exports = { signupController, loginController };
+
+// User login get infomation
+const authController = async(req,res)=>{
+try {
+    res.json(req.user);
+    
+} catch (error) {
+    res.status(500).json({
+        message: "Internal server Error",
+        error: error.message,
+      });
+}
+}
+
+// logout user controller
+
+const logoutController = async(req,res)=>{
+    try {
+       
+        
+    } catch (error) {
+        res.status(500).json({
+            message: "Internal server Error",
+            error: error.message,
+          });
+    }
+    }
+
+module.exports = { signupController, loginController,authController,logoutController };
