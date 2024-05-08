@@ -1,4 +1,4 @@
-const { Posts } = require("../models");
+const { Posts, Likes } = require("../models");
 
 // Posts created controller
 const createPostController = async (req, res) => {
@@ -28,12 +28,15 @@ const createPostController = async (req, res) => {
 // Get All posts
 const getPostController = async (req, res) => {
   try {
-    const getPost = await Posts.findAll({});
+    const getPost = await Posts.findAll({include: [Likes]});
+    const getLikePost = await Posts.findAll({where:{UserId:req.user.id}});
 
-    if (getPost) {
+
+    if (getPost || getLikePost) {
       res.status(201).json({
         message: "Get Post successfully!",
-        post: getPost,
+        allPost: getPost,
+        likePost: getLikePost
       });
     } else {
       res.status(404).json({

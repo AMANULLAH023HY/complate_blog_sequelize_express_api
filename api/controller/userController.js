@@ -1,6 +1,7 @@
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { get } = require("../routes/userRoute");
 
 // User Registration
 const signupController = async (req, res) => {
@@ -84,6 +85,36 @@ try {
 }
 }
 
+
+// Get username by primary key
+
+const usernameController = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const getUser = await Users.findByPk(id, {
+      attributes: { exclude: ["password"] }
+    });
+
+    if (getUser) {
+      res.status(200).json({
+        message: "Get username",
+        user: getUser
+      });
+    } else {
+      res.status(404).json({
+        message: "Username doesn't exist"
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
+
 // logout user controller
 
 const logoutController = async(req,res)=>{
@@ -98,4 +129,4 @@ const logoutController = async(req,res)=>{
     }
     }
 
-module.exports = { signupController, loginController,authController,logoutController };
+module.exports = { signupController, loginController,authController,logoutController,usernameController };
