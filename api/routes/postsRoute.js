@@ -5,6 +5,8 @@ const {
   getSinglePostController,
   deletePostController,
   getSinglePostByUserIdController,
+  updatePostTitleController,
+  updatePostTextController,
 } = require("../controller/postContrller");
 const { validationToken } = require("../middleware/auth");
 
@@ -18,6 +20,8 @@ router.get(
   validationToken,
   getSinglePostByUserIdController
 );
+router.put("/updatePostTitle", validationToken, updatePostTitleController);
+router.put("/updatePostText", validationToken, updatePostTextController);
 router.delete("/deletePost/:postId", validationToken, deletePostController);
 
 module.exports = router;
