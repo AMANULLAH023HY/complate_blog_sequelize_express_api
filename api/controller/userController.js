@@ -48,8 +48,8 @@ const loginController = async (req, res) => {
           );
           res.status(200).json({
             message: "user Login successfully!",
-            id:user.id,
-            username:username,
+            id: user.id,
+            username: username,
             token: accessToken,
           });
         } else {
@@ -71,20 +71,17 @@ const loginController = async (req, res) => {
   }
 };
 
-
 // User login get infomation
-const authController = async(req,res)=>{
-try {
+const authController = async (req, res) => {
+  try {
     res.json(req.user);
-    
-} catch (error) {
+  } catch (error) {
     res.status(500).json({
-        message: "Internal server Error",
-        error: error.message,
-      });
-}
-}
-
+      message: "Internal server Error",
+      error: error.message,
+    });
+  }
+};
 
 // Get username by primary key
 
@@ -93,40 +90,78 @@ const usernameController = async (req, res) => {
 
   try {
     const getUser = await Users.findByPk(id, {
-      attributes: { exclude: ["password"] }
+      attributes: { exclude: ["password"] },
     });
 
     if (getUser) {
       res.status(200).json({
         message: "Get username",
-        user: getUser
+        user: getUser,
       });
     } else {
       res.status(404).json({
-        message: "Username doesn't exist"
+        message: "Username doesn't exist",
       });
     }
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",
-      error: error.message
+      error: error.message,
+    });
+  }
+};
+
+// Chnage password controller
+
+const changePasswordController = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user = await Users.findOne({where:{ username: req.user.username }});
+    
+      bcrypt.compare(oldPassword, user.password).then((match) => {
+        if(!match){
+          res.status(401).json({
+            message:"Password doesn't match!"
+          })
+        }
+        bcrypt.hash(newPassword,10).then(async(hash)=>{
+          await Users.update({password:hash},{where:{ username: req.user.username }});
+          res.status(200).json({
+            message:"Passowrd change successfully!",  
+          })
+        })
+      })
+   
+        
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };
 
 
+
+
+
 // logout user controller
 
-const logoutController = async(req,res)=>{
-    try {
-       
-        
-    } catch (error) {
-        res.status(500).json({
-            message: "Internal server Error",
-            error: error.message,
-          });
-    }
-    }
+const logoutController = async (req, res) => {
+  try {
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server Error",
+      error: error.message,
+    });
+  }
+};
 
-module.exports = { signupController, loginController,authController,logoutController,usernameController };
+module.exports = {
+  signupController,
+  loginController,
+  authController,
+  logoutController,
+  usernameController,
+  changePasswordController,
+};
